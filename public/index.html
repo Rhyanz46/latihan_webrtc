@@ -32,7 +32,7 @@
     async function setFriend(remotePeerConnection){
       let found = false
       pesanDom.innerHTML = `Menunggu teman anda yang bernama '${your_destionation}' online.`
-      let a = 60;
+      let a = 30;
       while(a > 0){
         waitDom.innerHTML = `wait (${a})`
         let checkConnection = await fetch('/connections')
@@ -48,9 +48,9 @@
       waitDom.innerHTML = ``
 
       if (!found){
-        pesanDom.innerHTML = "kita sudah menunggu satu menit tapi temanmu belum aktif,, silahkan di ulangi"
+        pesanDom.innerHTML = "kita sudah menunggu, tapi temanmu belum aktif juga,, silahkan di ulangi"
         await sleep(10000);
-        window.location.reload()
+        stop()
       }
 
       pesanDom.innerHTML = "Teman Anda di temukan, tunggu sebentar . . . "
@@ -92,6 +92,8 @@
     }
 
     async function mulai(){
+      oldSession = [];
+      parrent.innerHTML = ""
       your_name = window.prompt("Nama Mu : ")
       your_destionation = window.prompt("Nama Teman Mu : ")
 

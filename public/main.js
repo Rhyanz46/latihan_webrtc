@@ -5,6 +5,7 @@ const stopDom = document.getElementById('stop')
 const pesanDom = document.getElementById('pesan')
 const waitDom = document.getElementById('wait')
 const mulaiDom = document.getElementById('mulai')
+const parrent = document.getElementById("daftar")
 const localPeerConnection = new RTCPeerConnection({sdpSemantics: 'unified-plan'});
 
 let your_name = null;
@@ -69,7 +70,6 @@ window.navigator.mediaDevices.getUserMedia({
 })
 
 async function showAllConnnections(){
-  let parrent = document.getElementById("daftar")
   let response = await fetch('/connections')
   response = await response.json();
   response.map((name) => {
@@ -100,6 +100,10 @@ async function showAllConnnections(){
     if (!found){
       document.getElementById(localName).remove()
       oldSession = oldSession.filter((val) => val != localName)
+      if (localName == your_destionation){
+        alert("teman anda telah keluar()")
+        stop()
+      }
     }
   }
 }
