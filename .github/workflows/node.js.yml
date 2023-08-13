@@ -29,13 +29,13 @@ jobs:
     - run: npm install -g node-pre-gyp
     - run: npm install
     - name: Build Docker image
-      run: docker build -t latihan_fastapi_app:latest .
+      run: docker build -t latihan_webrtc:latest .
     - name: Build Docker image
-      run: docker tag latihan_fastapi_app registry.digitalocean.com/ariandigital/latihan_fastapi_app:latest
+      run: docker tag latihan_webrtc registry.digitalocean.com/ariandigital/latihan_webrtc:latest
     - name: Log in to Docker registry
       run: echo ${{ secrets.DIGITALOCEAN_REGISTRY_PASSWORD }} | docker login registry.digitalocean.com/ariandigital --username ${{ secrets.DIGITALOCEAN_REGISTRY_USERNAME }} --password-stdin
     - name: Push Docker image
-      run: docker push registry.digitalocean.com/ariandigital/latihan_fastapi_app:latest
+      run: docker push registry.digitalocean.com/ariandigital/latihan_webrtc:latest
     - name: SSH into Server
       uses: appleboy/ssh-action@master
       with:
@@ -44,6 +44,6 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         script: |
           doctl registry garbage-collection start -f
-          sudo docker pull registry.digitalocean.com/ariandigital/latihan_fastapi_app
+          sudo docker pull registry.digitalocean.com/ariandigital/latihan_webrtc
           sudo docker rm --force latihan_fastapi
-          sudo docker run -p 8000:8000 -d --name latihan_fastapi registry.digitalocean.com/ariandigital/latihan_fastapi_app:latest
+          sudo docker run -p 8000:8000 -d --name latihan_fastapi registry.digitalocean.com/ariandigital/latihan_webrtc:latest
