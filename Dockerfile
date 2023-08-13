@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 4000
 
 # Start the FastAPI service
-CMD ["node", "main.js"]
+CMD ["nodemon", "main.js"]

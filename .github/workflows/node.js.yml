@@ -20,30 +20,30 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    # - uses: actions/checkout@v3
-    # - name: Use Node.js ${{ matrix.node-version }}
-    #   uses: actions/setup-node@v3
-    #   with:
-    #     node-version: ${{ matrix.node-version }}
-    #     cache: 'npm'
-    # - run: npm install -g node-pre-gyp
-    # - run: npm install
-    # - name: Build Docker image
-    #   run: docker build -t latihan_webrtc:latest .
-    # - name: Build Docker image
-    #   run: docker tag latihan_webrtc registry.digitalocean.com/ariandigital/latihan_webrtc:latest
-    # - name: Log in to Docker registry
-    #   run: echo ${{ secrets.DIGITALOCEAN_REGISTRY_PASSWORD }} | docker login registry.digitalocean.com/ariandigital --username ${{ secrets.DIGITALOCEAN_REGISTRY_USERNAME }} --password-stdin
-    # - name: Push Docker image
-    #   run: docker push registry.digitalocean.com/ariandigital/latihan_webrtc:latest
-    - name: SSH into Server
-      uses: appleboy/ssh-action@master
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
       with:
-        host: ${{ secrets.SERVER_HOST }}
-        username: ${{ secrets.SERVER_USERNAME }}
-        key: ${{ secrets.SSH_KEY }}
-        script: |
-          doctl registry garbage-collection start -f
-          sudo docker pull registry.digitalocean.com/ariandigital/latihan_webrtc
-          sudo docker rm --force latihan_fastapi
-          sudo docker run -p 8000:8000 -d --name latihan_fastapi registry.digitalocean.com/ariandigital/latihan_webrtc:latest
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm install -g node-pre-gyp
+    - run: npm install
+    - name: Build Docker image
+      run: docker build -t latihan_webrtc:latest .
+    - name: Build Docker image
+      run: docker tag latihan_webrtc registry.digitalocean.com/ariandigital/latihan_webrtc:latest
+    - name: Log in to Docker registry
+      run: echo ${{ secrets.DIGITALOCEAN_REGISTRY_PASSWORD }} | docker login registry.digitalocean.com/ariandigital --username ${{ secrets.DIGITALOCEAN_REGISTRY_USERNAME }} --password-stdin
+    - name: Push Docker image
+      run: docker push registry.digitalocean.com/ariandigital/latihan_webrtc:latest
+    # - name: SSH into Server
+    #   uses: appleboy/ssh-action@master
+    #   with:
+    #     host: ${{ secrets.SERVER_HOST }}
+    #     username: ${{ secrets.SERVER_USERNAME }}
+    #     key: ${{ secrets.SSH_KEY }}
+    #     script: |
+    #       doctl registry garbage-collection start -f
+    #       sudo docker pull registry.digitalocean.com/ariandigital/latihan_webrtc
+    #       sudo docker rm --force latihan_fastapi
+    #       sudo docker run -p 8000:8000 -d --name latihan_fastapi registry.digitalocean.com/ariandigital/latihan_webrtc:latest
