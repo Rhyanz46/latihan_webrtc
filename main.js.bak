@@ -1,0 +1,89 @@
+const path = require("path");
+const uuidv4 = require('uuid/v4');
+const express = require("express");
+const { RTCPeerConnection, RTCSessionDescription } = require('wrtc');
+
+const EventEmitter = require('events');
+
+class Connection extends EventEmitter {
+  constructor(id) {
+    super();
+    this.id = id;
+    this.state = 'open';
+  }
+
+  close() {
+    this.state = 'closed';
+    this.emit('closed');
+  }
+
+  toJSON() {
+    return {
+      id: this.id,
+      state: this.state
+    };
+  }
+}
+
+
+const connections = new Map();
+function createId() {
+  do {
+    const id = uuidv4();
+    if (!connections.has(id)) {
+      return id;
+    }
+  // eslint-disable-next-line
+  } while (true);
+}   
+
+const app = express();
+const config = require("./config");
+const port = config.port;
+const peers = new Map();
+
+app.use("/", express.static(path.join(__dirname, "/public")));
+
+app.get('/offer/:id', (req, res) => {
+  const id = req.params.id;
+
+  const pc = new RTCPeerConnection();
+
+  peers.set(id, pc);
+
+  pc.createOffer().then(offer => {
+    pc.setLocalDescription(offer);
+    res.json({ offer: offer });
+  });
+});
+
+app.post('/answer/:id', express.json(), (req, res) => {
+  const id = req.params.id;
+  const pc = peers.get(id);
+  const answer = new RTCSessionDescription(req.body.answer);
+  pc.setRemoteDescription(answer);
+
+  res.sendStatus(200);
+});
+
+
+
+///
+
+
+app.post(`/connections`, async (req, res) => {
+  try {
+    const id = createId();
+    const pc = new RTCPeerConnection();
+    // peers.set(id, pc);
+    const connection = new Connection(id);
+    connections.set(connection.id, connection);
+    res.send(pc);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+});
+app.listen(port, "0.0.0.0", () => {
+  console.log(`app listening at http://0.0.0.0:${port}`);
+});
