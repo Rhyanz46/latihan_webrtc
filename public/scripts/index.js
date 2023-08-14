@@ -78,7 +78,7 @@ socket.on("remove-user", ({ socketId }) => {
 });
 
 socket.on("call-made", async data => {
-  if (getCalled) {
+  // if (getCalled) {
     const confirmed = confirm(
       `User "Socket: ${data.socket}" wants to call you. Do accept this call?`
     );
@@ -90,7 +90,7 @@ socket.on("call-made", async data => {
 
       return;
     }
-  }
+  // }
 
   await peerConnection.setRemoteDescription(
     new RTCSessionDescription(data.offer)
@@ -102,7 +102,7 @@ socket.on("call-made", async data => {
     answer,
     to: data.socket
   });
-  getCalled = true;
+  // getCalled = true;
 });
 
 socket.on("answer-made", async data => {
