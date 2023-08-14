@@ -63,7 +63,7 @@ function updateUserList(socketIds) {
   });
 }
 
-const socket = io.connect("server.ariansaputra.com");
+const socket = io.connect(window.location.host);
 
 socket.on("update-user-list", ({ users }) => {
   updateUserList(users);

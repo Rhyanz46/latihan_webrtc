@@ -42,4 +42,4 @@ jobs:
     #       # doctl registry garbage-collection start -f
     #       # sudo docker pull registry.digitalocean.com/ariandigital/latihan_webrtc
     #       # sudo docker rm --force latihan_webrtc
-    #       # sudo docker run -p 3000:3000 -d --name latihan_webrtc registry.digitalocean.com/ariandigital/latihan_webrtc:latest
+    #       # sudo docker run -p 5000:5000 -d --name latihan_webrtc registry.digitalocean.com/ariandigital/latihan_webrtc:latest
