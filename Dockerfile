@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Expose the port on which the FastAPI service will run
-EXPOSE 4000
+EXPOSE 5000
 
 # Start the FastAPI service
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]

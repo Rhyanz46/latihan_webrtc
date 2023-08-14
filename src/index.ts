@@ -10,17 +10,11 @@ const io = socketIO(httpServer)
 let activeSockets: string[] = []
 
 app.use(express.json())
-
-
-// TODO: Routing aplikasi akan kita tulis di sini
-
 app.use(express.static(path.join(__dirname, "../public")));
-
-
-// handle 404 error
-app.use((req: Request, res: Response, next: Function) => {
-  next(createError(404))
-})
+// app.use((req: Request, res: Response, next: Function) => {
+//   next(createError(404))
+// })
+  
 
 io.on("connection", socket => {
   const existingSocket = activeSockets.find(
@@ -70,10 +64,6 @@ io.on("connection", socket => {
     });
   });
 });
-
-// app.listen(3000, () =>
-//   console.log(`⚡️[server]: Server is running at https://localhost:3000`)
-// )
 
 httpServer.listen(5000, '0.0.0.0', () => {
     console.log(`⚡️[server]: Server is running at https://0.0.0.0:5000`)
