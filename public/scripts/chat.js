@@ -24,8 +24,6 @@ const PERSON_IMG = "https://image.flaticon.com/icons/svg/145/145867.svg";
 const BOT_NAME = "BOT";
 const PERSON_NAME = "Sajad";
 
-
-
 sendBtn.addEventListener('click', function(event) {
   event.preventDefault();
   if (chatText.value) {

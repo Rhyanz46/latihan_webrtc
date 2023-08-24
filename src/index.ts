@@ -1,12 +1,12 @@
 import express, { Request, Response } from "express";
+import fs from "fs";
 import socketIO, { Server as SocketIOServer } from "socket.io";
 import { createServer, Server as HTTPServer } from "http";
-import createError from "http-errors"
+import https from "https";
 import path from "path";
 
 const app = express()
 const httpServer = createServer(app)
-const io = socketIO(httpServer)
 let activeSockets: string[] = []
 
 app.use(express.json())
@@ -14,6 +14,14 @@ app.use(express.static(path.join(__dirname, "../public")));
 // app.use((req: Request, res: Response, next: Function) => {
 //   next(createError(404))
 // })
+
+var options = {
+  key: fs.readFileSync('./privkey.pem'),
+  cert: fs.readFileSync('./fullchain.pem'),
+};
+
+var server = https.createServer(options, app)
+const io = socketIO(server)
   
 
 io.on("connection", socket => {
@@ -72,6 +80,6 @@ io.on("connection", socket => {
   });
 });
 
-httpServer.listen(5000, '0.0.0.0', () => {
-    console.log(`⚡️[server]: Server is running at https://0.0.0.0:5000`)
+server.listen(443, function(){
+  console.log(`⚡️[server]: Server is running at https://0.0.0.0:443`)
 });
